@@ -22,13 +22,25 @@ android {
 dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
+
+    //dependencies for http calls
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta3'
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
     compile 'com.squareup.okhttp:okhttp:2.7.0'
+
+    //dependencies for rx java
     compile 'io.reactivex:rxjava:1.0.16'
     compile 'io.reactivex:rxandroid:1.0.1'
     compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta1'
+
+    //dependencies for dependency injection
+    compile 'org.roboguice:roboguice:3.+'
+    provided 'org.roboguice:roboblender:3.+'
+
+
+    //dependency for javax.annotations.Nullable
+    compile 'com.google.code.findbugs:annotations:3.0.1'
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
