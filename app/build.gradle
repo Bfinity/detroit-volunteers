@@ -19,9 +19,16 @@ android {
     productFlavors {
     }
 
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE-FIREBASE.txt'
+        exclude 'META-INF/NOTICE'
+    }
+
 }
 
 dependencies {
+    //dependencies for support
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
 
@@ -39,6 +46,9 @@ dependencies {
     //dependencies for dependency injection
     compile 'org.roboguice:roboguice:3.+'
     provided 'org.roboguice:roboblender:3.+'
+
+    //dependency for database
+    compile 'com.firebase:firebase-client-android:2.5.0+'
 
     //dependency for testing
     testCompile 'junit:junit:4.12'
