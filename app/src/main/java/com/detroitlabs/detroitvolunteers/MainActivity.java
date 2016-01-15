@@ -14,8 +14,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.detroitlabs.detroitvolunteers.models.OpportunitiesResponse;
-import com.detroitlabs.detroitvolunteers.models.VolunteerOpportunity;
+import com.detroitlabs.detroitvolunteers.client.models.OpportunitiesResponse;
+import com.detroitlabs.detroitvolunteers.client.models.VolunteerOpportunity;
+import com.detroitlabs.detroitvolunteers.client.service.VolunteerMatchApiService;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -120,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        MyApiEndpointInterface apiService = retrofit.create(MyApiEndpointInterface.class);
+        VolunteerMatchApiService apiService = retrofit.create(VolunteerMatchApiService.class);
 
         Call<OpportunitiesResponse> call = apiService.getResponse();
         call.enqueue(new retrofit2.Callback<OpportunitiesResponse>() {
@@ -147,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public interface MyApiEndpointInterface {
+    public interface MyApiEndpointInterface extends VolunteerMatchApiService {
         // http://www.volunteermatch.org/api/call?action=searchOpportunities&query="{\"name\":\"john\"}" 
 
         @GET("call?action=searchOpportunities&query=%7B%22location%22%3A%22detroit%2C+us%2C+mi%22%7D")

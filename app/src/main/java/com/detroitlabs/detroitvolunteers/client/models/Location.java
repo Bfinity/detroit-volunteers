@@ -1,4 +1,4 @@
-package com.detroitlabs.detroitvolunteers.models;
+package com.detroitlabs.detroitvolunteers.client.models;
 
 public class Location {
 
