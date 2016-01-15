@@ -52,7 +52,7 @@ public class VolunteerOpportunity {
         return opportunityUrl;
     }
 
-    public class ParentOrg{
+    public static class ParentOrg{
         int id;
         String name;
 

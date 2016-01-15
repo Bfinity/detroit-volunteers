@@ -18,6 +18,13 @@ android {
     }
     productFlavors {
     }
+
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+               exclude 'META-INF/LICENSE-FIREBASE.txt'
+               exclude 'META-INF/NOTICE'
+           }
 }
 
 dependencies {
@@ -26,8 +33,8 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta3'
     compile 'com.google.code.gson:gson:2.5'
-    compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
-    compile 'com.squareup.okhttp:okhttp:2.7.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta3'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.0.0-RC1'
 
     //dependencies for rx java
     compile 'io.reactivex:rxjava:1.0.16'
@@ -37,10 +44,6 @@ dependencies {
     //dependencies for dependency injection
     compile 'org.roboguice:roboguice:3.+'
     provided 'org.roboguice:roboblender:3.+'
-
-    //dependency for javax.annotations.Nullable
-    compile 'com.google.code.findbugs:annotations:3.0.1'
-
 
     //dependency for backend database
     compile 'com.firebase:firebase-client-android:2.3.1'
