@@ -99,14 +99,12 @@ public class MainActivity extends AppCompatActivity {
         Interceptor headerIntercepter = new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
-                Request original = chain.request();
-                Request.Builder updatedRequest = original.newBuilder()
+                Request request = chain.request().newBuilder()
                         .header("Accept-Charset", "UTF-8")
                         .header("Content-Type", "application/json")
                         .header("Authorization", "WSSE profile=\"UsernameToken\"")
-                        .header("X-WSSE", wsse);
+                        .header("X-WSSE", wsse).build();
 
-                Request request = updatedRequest.build();
                 return chain.proceed(request);
             }
         };
@@ -114,8 +112,7 @@ public class MainActivity extends AppCompatActivity {
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(headerIntercepter)
                 .addInterceptor(logger)
-                .addNetworkInterceptor(headerIntercepter).build();
-
+                .build();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(url)
@@ -129,8 +126,6 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new retrofit2.Callback<OpportunitiesResponse>() {
             @Override
             public void onResponse(retrofit2.Response<OpportunitiesResponse> response) {
-                Log.i("ResponseCode", String.valueOf(response.code()));
-                Log.i("ResponseReceived", response.body().toString());
                 OpportunitiesResponse listOfOp = response.body();
                 getArrayList(listOfOp);
             }
