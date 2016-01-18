@@ -21,6 +21,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    //todo move the search logic into the login fragment
+
     private ListView listView;
     private ArrayAdapter<String> listAdapter;
     private ArrayList<String> arrayList;
