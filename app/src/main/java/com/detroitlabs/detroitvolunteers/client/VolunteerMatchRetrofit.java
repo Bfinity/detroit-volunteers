@@ -19,6 +19,29 @@ public class VolunteerMatchRetrofit {
 
     private static String url = "http://www.volunteermatch.org/api/";
 
+
+    public void searchForVolunteerOpportunities(final SearchOpportunitiesCallBack searchCallBack){
+        Retrofit retrofit = generateBuildRetroFitClient();
+        VolunteerMatchApiService service = retrofit.create(VolunteerMatchApiService.class);
+        final Call<OpportunitiesResponse> call = service.getAllVolunteerOpportunities();
+        call.enqueue(new Callback<OpportunitiesResponse>() {
+            @Override
+            public void onResponse(retrofit2.Response<OpportunitiesResponse> response) {
+                if(response.body() != null){
+                    searchCallBack.onSuccess(response.body());
+                }
+                else{
+                    searchCallBack.onError(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                searchCallBack.onFailure(t.getLocalizedMessage());
+            }
+        });
+    }
+
     private Retrofit generateBuildRetroFitClient(){
         final String wsse = WSSEGenerator.createWSSE();
         HttpLoggingInterceptor logger = new HttpLoggingInterceptor();
@@ -47,24 +70,4 @@ public class VolunteerMatchRetrofit {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
-
-    public void searchForVolunteerOpportunities(final SearchOpportunitiesCallBack callBack){
-        Retrofit retrofit = generateBuildRetroFitClient();
-        VolunteerMatchApiService service = retrofit.create(VolunteerMatchApiService.class);
-        Call<OpportunitiesResponse> call = service.getAllVolunteerOpportunities();
-        call.enqueue(new Callback<OpportunitiesResponse>() {
-            @Override
-            public void onResponse(retrofit2.Response<OpportunitiesResponse> response) {
-                if(response.body() != null){
-                    callBack.onSuccess(response.body());
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
-    }
-
 }
