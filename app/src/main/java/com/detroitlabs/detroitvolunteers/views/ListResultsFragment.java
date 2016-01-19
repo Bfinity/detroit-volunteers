@@ -35,6 +35,7 @@ public class ListResultsFragment extends RoboFragment {
         return listResultsFragment;
     }
 
+    //todo display custom view of list item
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class ListResultsFragment extends RoboFragment {
         listToDisplay = getArguments().getParcelableArrayList("listToDisplay");
         ArrayList<String> list = new ArrayList<>();
         list.add(listToDisplay.get(0).getOpportunityTitle());
+        list.add(String.valueOf(listToDisplay.get(0).getAvailability().isOngoing()));
         adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, list);
         return view;
     }

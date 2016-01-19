@@ -8,6 +8,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class VolunteerOpportunity implements Parcelable {
 
+    Availability availability;
+
     int[] categoryIds;
 
     @SerializedName("plaintextDescription")
@@ -25,6 +27,10 @@ public class VolunteerOpportunity implements Parcelable {
 
     @SerializedName("vmURL")
     String opportunityUrl;
+
+    public Availability getAvailability(){
+        return availability;
+    }
 
     public int[] getCategoryIds(){
         return categoryIds;
@@ -98,6 +104,9 @@ public class VolunteerOpportunity implements Parcelable {
     }
 
 
+    public VolunteerOpportunity() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -105,19 +114,18 @@ public class VolunteerOpportunity implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(this.availability, flags);
         dest.writeIntArray(this.categoryIds);
         dest.writeString(this.opportunityDescription);
         dest.writeParcelable(this.location, 0);
         dest.writeInt(this.minimumAge);
-        dest.writeParcelable(this.parentOrg, flags);
+        dest.writeParcelable(this.parentOrg, 0);
         dest.writeString(this.opportunityTitle);
         dest.writeString(this.opportunityUrl);
     }
 
-    public VolunteerOpportunity() {
-    }
-
     protected VolunteerOpportunity(Parcel in) {
+        this.availability = in.readParcelable(Availability.class.getClassLoader());
         this.categoryIds = in.createIntArray();
         this.opportunityDescription = in.readString();
         this.location = in.readParcelable(Location.class.getClassLoader());
@@ -127,7 +135,7 @@ public class VolunteerOpportunity implements Parcelable {
         this.opportunityUrl = in.readString();
     }
 
-    public static final Parcelable.Creator<VolunteerOpportunity> CREATOR = new Parcelable.Creator<VolunteerOpportunity>() {
+    public static final Creator<VolunteerOpportunity> CREATOR = new Creator<VolunteerOpportunity>() {
         public VolunteerOpportunity createFromParcel(Parcel source) {
             return new VolunteerOpportunity(source);
         }
