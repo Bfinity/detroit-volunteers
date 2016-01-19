@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.detroitlabs.detroitvolunteers.R;
 import com.detroitlabs.detroitvolunteers.client.SearchOpportunitiesCallBack;
@@ -41,18 +42,31 @@ public class SignInFragment extends RoboFragment {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               searchForVolunteerOpportunities();
+                searchForVolunteerOpportunities();
             }
         });
 
     };
 
+    //todo move to listview when search functionality added to fragment
     public void searchForVolunteerOpportunities(){
         retrofitObject.searchForVolunteerOpportunities(new SearchOpportunitiesCallBack() {
             @Override
             public void onSuccess(OpportunitiesResponse response) {
                 ListResultsFragment listResultsFragment = ListResultsFragment.newInstance(response.getList());
                 getFragmentManager().beginTransaction().replace(R.id.container, listResultsFragment).commit();
+            }
+
+            //todo implement error popup
+            @Override
+            public void onError(int statusCode) {
+                Toast.makeText(getContext(), "An error occured", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(String message) {
+                Toast.makeText(getContext(), "An error occured", Toast.LENGTH_LONG).show();
+
             }
         });
     }
