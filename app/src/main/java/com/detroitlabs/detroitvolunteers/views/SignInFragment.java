@@ -29,6 +29,7 @@ public class SignInFragment extends RoboFragment {
         return inflater.inflate(R.layout.fragment_signin, container, false);
     }
 
+    //todo add user object to be passed into list fragment
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
