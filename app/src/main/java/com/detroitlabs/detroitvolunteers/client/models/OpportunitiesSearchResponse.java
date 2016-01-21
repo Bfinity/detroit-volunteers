@@ -1,7 +1,5 @@
 package com.detroitlabs.detroitvolunteers.client.models;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
@@ -30,7 +28,6 @@ public class OpportunitiesSearchResponse {
 
     public static OpportunitiesSearchResponse parseJSON(String response){
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        Log.i("GSONResponse", response);
         OpportunitiesSearchResponse opportunitiesSearchResponse = gson.fromJson(response, OpportunitiesSearchResponse.class);
         return opportunitiesSearchResponse;
     }

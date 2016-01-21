@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.detroitlabs.detroitvolunteers.views.SignInFragment;
+import com.firebase.client.Firebase;
 
 import roboguice.activity.RoboActionBarActivity;
 
@@ -14,6 +15,9 @@ public class MainActivity extends RoboActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        initializeFirebase();
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -42,5 +46,9 @@ public class MainActivity extends RoboActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void initializeFirebase(){
+        Firebase.setAndroidContext(this);
     }
 }

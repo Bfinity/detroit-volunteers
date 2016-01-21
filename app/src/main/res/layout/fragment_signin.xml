@@ -7,13 +7,35 @@
 
     <EditText
         android:id="@+id/edittext_username"
-        android:hint="@string/edittext_hint"
+        android:visibility="gone"
+        android:hint="@string/edittext_username_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/edittext_email"
+        android:inputType="textEmailAddress"
+        android:hint="@string/edittext_email_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/edittext_password"
+        android:inputType="textPassword"
+        android:hint="@string/edittext_password_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <Button
-        android:id="@+id/button_search"
-        android:text="@string/button_search"
+        android:id="@+id/button_login"
+        android:text="@string/button_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/text_signup"
+        android:clickable="true"
+        android:text="@string/text_signup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

@@ -15,6 +15,7 @@ import com.detroitlabs.detroitvolunteers.client.SearchOpportunitiesCallBack;
 import com.detroitlabs.detroitvolunteers.client.VolunteerMatchRetrofit;
 import com.detroitlabs.detroitvolunteers.client.models.OpportunitiesSearchResponse;
 import com.detroitlabs.detroitvolunteers.client.models.VolunteerOpportunity;
+import com.detroitlabs.detroitvolunteers.models.User;
 
 import java.util.ArrayList;
 
@@ -22,6 +23,8 @@ import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
 
 public class ListResultsFragment extends RoboFragment implements SearchOpportunitiesCallBack {
+
+    private static final String USER_BUNDLE_KEY = "userKey";
 
     @InjectView(R.id.resultsList)
     ListView resultsList;
@@ -36,9 +39,9 @@ public class ListResultsFragment extends RoboFragment implements SearchOpportuni
     //todo replace with custom adapter
     private ArrayAdapter adapter;
 
-    public static ListResultsFragment newInstance(ArrayList<VolunteerOpportunity> listToDisplay){
+    public static ListResultsFragment newInstance(User user){
         Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("listToDisplay", listToDisplay);
+        bundle.putParcelable(USER_BUNDLE_KEY, user);
         ListResultsFragment listResultsFragment = new ListResultsFragment();
         listResultsFragment.setArguments(bundle);
         return listResultsFragment;
@@ -64,7 +67,10 @@ public class ListResultsFragment extends RoboFragment implements SearchOpportuni
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 DetailsFragment detailsFragment = DetailsFragment.newInstance(listToDisplay.get(position));
-                getFragmentManager().beginTransaction().replace(R.id.container, detailsFragment).commit();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, detailsFragment)
+                        .addToBackStack("DetailsFragment")
+                        .commit();
             }
         });
         searchVolunteerOpportunities();
