@@ -6,12 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.detroitlabs.detroitvolunteers.R;
 import com.detroitlabs.detroitvolunteers.client.models.VolunteerOpportunity;
+import com.detroitlabs.detroitvolunteers.models.User;
 
 import java.util.ArrayList;
 
@@ -20,6 +20,8 @@ import roboguice.inject.InjectView;
 
 public class ListResultsFragment extends RoboFragment {
 
+    private static final String USER_BUNDLE_KEY = "userKey";
+
     @InjectView(R.id.resultsList)
     ListView resultsList;
 
@@ -27,9 +29,9 @@ public class ListResultsFragment extends RoboFragment {
 
     ListAdapter adapter;
 
-    public static ListResultsFragment newInstance(ArrayList<VolunteerOpportunity> listToDisplay){
+    public static ListResultsFragment newInstance(User user){
         Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("listToDisplay", listToDisplay);
+        bundle.putParcelable(USER_BUNDLE_KEY, user);
         ListResultsFragment listResultsFragment = new ListResultsFragment();
         listResultsFragment.setArguments(bundle);
         return listResultsFragment;
@@ -41,11 +43,6 @@ public class ListResultsFragment extends RoboFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_listresults, container, false);
-        listToDisplay = getArguments().getParcelableArrayList("listToDisplay");
-        ArrayList<String> list = new ArrayList<>();
-        list.add(listToDisplay.get(0).getOpportunityTitle());
-        list.add(String.valueOf(listToDisplay.get(0).getAvailability().isOngoing()));
-        adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, list);
         return view;
     }
 

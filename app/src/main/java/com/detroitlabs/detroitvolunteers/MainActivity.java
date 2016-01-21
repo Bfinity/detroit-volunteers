@@ -4,13 +4,9 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
-import com.detroitlabs.detroitvolunteers.client.VolunteerMatchRetrofit;
 import com.detroitlabs.detroitvolunteers.views.SignInFragment;
-
-import java.util.ArrayList;
+import com.firebase.client.Firebase;
 
 import roboguice.activity.RoboActionBarActivity;
 
@@ -18,17 +14,12 @@ public class MainActivity extends RoboActionBarActivity {
 
     //todo move the search logic into the login fragment
 
-    private ListView listView;
-    private ArrayAdapter<String> listAdapter;
-    private ArrayList<String> arrayList;
-    private final VolunteerMatchRetrofit retrofitOb = new VolunteerMatchRetrofit();
-
-
-    private static String url = "http://www.volunteermatch.org/api/";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        initializeFirebase();
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -57,5 +48,9 @@ public class MainActivity extends RoboActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void initializeFirebase(){
+        Firebase.setAndroidContext(this);
     }
 }

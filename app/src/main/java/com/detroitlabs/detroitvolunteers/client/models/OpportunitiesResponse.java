@@ -30,7 +30,6 @@ public class OpportunitiesResponse {
 
     public static OpportunitiesResponse parseJSON(String response){
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        Log.i("GSONResponse", response);
         OpportunitiesResponse opportunitiesResponse = gson.fromJson(response, OpportunitiesResponse.class);
         return opportunitiesResponse;
     }
