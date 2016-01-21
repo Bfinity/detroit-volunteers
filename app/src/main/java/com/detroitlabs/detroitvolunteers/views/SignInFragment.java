@@ -30,7 +30,7 @@ public class SignInFragment extends RoboFragment implements UserAuthCallBack {
     @InjectView(R.id.edittext_email)
     EditText userEmailField;
 
-    @InjectView(R.id.edittext_username)
+    @InjectView(R.id.edittext_password)
     EditText passwordField;
 
     @InjectView(R.id.button_login)
@@ -54,7 +54,7 @@ public class SignInFragment extends RoboFragment implements UserAuthCallBack {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isUserEmailFieldVisible()) {
+                if (isUsernameFieldVisible()) {
                     if (signUpFieldsComplete()) {
                         signUpNewUser(getStringTrimmed(usernameField),
                                       getStringTrimmed(userEmailField),
@@ -63,7 +63,7 @@ public class SignInFragment extends RoboFragment implements UserAuthCallBack {
                 }
                 else{
                     if(logInFieldsComplete()){
-                        logInReturningUser(getStringTrimmed(usernameField),
+                        logInReturningUser(getStringTrimmed(userEmailField),
                                            getStringTrimmed(passwordField));
                     }
                 }
@@ -78,26 +78,26 @@ public class SignInFragment extends RoboFragment implements UserAuthCallBack {
     }
 
     private void updateSignUpView(){
-        if(!isUserEmailFieldVisible()){
-            userEmailField.setVisibility(View.VISIBLE);
+        if(!isUsernameFieldVisible()){
+            usernameField.setVisibility(View.VISIBLE);
             loginButton.setText(R.string.button_sign_up);
         }
         else {
-            userEmailField.setVisibility(View.GONE);
+            usernameField.setVisibility(View.GONE);
             loginButton.setText(R.string.button_login);
         }
     }
 
-    private boolean isUserEmailFieldVisible(){
-        return userEmailField.getVisibility() == View.VISIBLE;
+    private boolean isUsernameFieldVisible(){
+        return usernameField.getVisibility() == View.VISIBLE;
     }
 
     private boolean signUpFieldsComplete(){
-        return isTextNotEmpty(userEmailField) & logInFieldsComplete();
+        return isTextNotEmpty(usernameField) & logInFieldsComplete();
     }
 
     private boolean logInFieldsComplete(){
-        return isTextNotEmpty(usernameField) && isTextNotEmpty(passwordField);
+        return isTextNotEmpty(userEmailField) && isTextNotEmpty(passwordField);
     }
 
     private boolean isTextNotEmpty(EditText editText){
@@ -109,12 +109,12 @@ public class SignInFragment extends RoboFragment implements UserAuthCallBack {
     }
 
     private void signUpNewUser(String userName, String userEmail, String password){
-        User user = new User.Builder(userName).withUserEmail(userEmail).build();
+        User user = new User.Builder(userEmail).withUserName(userName).build();
         userAuthentication.createNewUser(user, password, this);
     }
 
-    private void logInReturningUser(String userName, String password){
-        User user = new User.Builder(userName).build();
+    private void logInReturningUser(String userEmail, String password){
+        User user = new User.Builder(userEmail).build();
         userAuthentication.authenticateUser(user, password, this);
     }
 

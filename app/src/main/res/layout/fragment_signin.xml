@@ -7,12 +7,12 @@
 
     <EditText
         android:id="@+id/edittext_username"
+        android:visibility="gone"
         android:hint="@string/edittext_username_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <EditText
-        android:visibility="gone"
         android:id="@+id/edittext_email"
         android:inputType="textEmailAddress"
         android:hint="@string/edittext_email_hint"

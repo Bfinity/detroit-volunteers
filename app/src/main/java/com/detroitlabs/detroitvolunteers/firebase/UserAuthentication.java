@@ -25,7 +25,7 @@ public class UserAuthentication {
         firebase.getFirebaseBaseRef().createUser(user.getUserEmail(), password, new Firebase.ValueResultHandler<Map<String, Object>>() {
             @Override
             public void onSuccess(Map<String, Object> stringObjectMap) {
-                if(stringObjectMap.containsKey("uid")){
+                if (stringObjectMap.containsKey("uid")) {
                     final User updatedUser = updateUserUid(user, stringObjectMap);
                     storeUserDataToFirebase(updatedUser, new Firebase.CompletionListener() {
                         @Override
@@ -48,13 +48,17 @@ public class UserAuthentication {
     }
 
     public void authenticateUser(@NonNull final User user, final String password, final UserAuthCallBack callback){
-        Query query = firebase.getFirebaseUserRef().orderByChild("userName").equalTo(user.getUserName());
+        Query query = firebase.getFirebaseUserRef().orderByChild("userEmail").equalTo(user.getUserEmail());
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                User returningUser = dataSnapshot.getChildren().iterator().next().getValue(User.class);
-                loginUser(returningUser, password, callback);
+                if (dataSnapshot.getValue() != null) {
+                    User returningUser = dataSnapshot.getChildren().iterator().next().getValue(User.class);
+                    loginUser(returningUser, password, callback);
+                } else {
+                    callback.onError("Unable to authenticate with this email. Please try again");
+                }
             }
 
             @Override
@@ -68,10 +72,6 @@ public class UserAuthentication {
         firebase.getFirebaseBaseRef().authWithPassword(user.getUserEmail(), password, new Firebase.AuthResultHandler() {
             @Override
             public void onAuthenticated(AuthData authData) {
-                User userAuthed = new User.Builder(user.getUserName())
-                        .withUserEmail(user.getUserEmail())
-                        .withUserUid(authData.getUid())
-                        .build();
                 User userAuth = new User.Builder().fromUser(user).withUserUid(authData.getUid()).build();
                 callback.onSuccess(userAuth);
             }
@@ -85,13 +85,13 @@ public class UserAuthentication {
 
     private User updateUserUid(@NonNull User user, Map<String, Object> map){
         String uid = (String) map.get("uid");
-        return new User.Builder(user.getUserName()).withUserEmail(user.getUserEmail()).withUserUid(uid).build();
+        return new User.Builder().fromUser(user).withUserUid(uid).build();
     }
 
     private void storeUserDataToFirebase(@NonNull User updatedUser, Firebase.CompletionListener completionListener){
         Map<String, String> map = new HashMap<String, String>();
         map.put("userName", updatedUser.getUserName());
-        map.put("withUserEmail", updatedUser.getUserEmail());
+        map.put("userEmail", updatedUser.getUserEmail());
         firebase.getFirebaseUserRef().child(updatedUser.getUserUid()).setValue(map, completionListener);
     }
 }

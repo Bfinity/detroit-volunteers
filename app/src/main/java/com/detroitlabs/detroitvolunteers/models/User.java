@@ -2,7 +2,6 @@ package com.detroitlabs.detroitvolunteers.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.text.TextUtils;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -46,12 +45,12 @@ public class User implements Parcelable {
 
         }
 
-        public Builder(@JsonProperty("userName") String userName){
-            this.userName = userName;
+        public Builder(@JsonProperty("userEmail") String userEmail){
+            this.userEmail = userEmail;
         }
 
-        public Builder withUserEmail(String userEmail){
-            this.userEmail = userEmail;
+        public Builder withUserName(String userName){
+            this.userName = userName;
             return this;
         }
 
@@ -65,15 +64,9 @@ public class User implements Parcelable {
         }
 
         public Builder fromUser(User user){
-            if(!TextUtils.isEmpty(user.getUserName())){
-                this.userName = userName;
-            }
-            if(!TextUtils.isEmpty(user.getUserEmail())){
-                this.userEmail = userEmail;
-            }
-            if(!TextUtils.isEmpty(user.getUserUid())){
-                this.userUid = userUid;
-            }
+            this.userName = user.getUserName();
+            this.userEmail = user.getUserEmail();
+            this.userUid = user.getUserUid();
             return this;
         }
     }
