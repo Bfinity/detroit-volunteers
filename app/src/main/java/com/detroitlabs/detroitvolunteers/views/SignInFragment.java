@@ -128,6 +128,7 @@ public class SignInFragment extends RoboFragment implements UserAuthCallBack {
     public void onSuccess(User user) {
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, ListResultsFragment.newInstance(user))
+                .addToBackStack("ListResultsFragment")
                 .commit();
     }
 

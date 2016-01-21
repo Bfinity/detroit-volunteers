@@ -67,7 +67,10 @@ public class ListResultsFragment extends RoboFragment implements SearchOpportuni
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 DetailsFragment detailsFragment = DetailsFragment.newInstance(listToDisplay.get(position));
-                getFragmentManager().beginTransaction().replace(R.id.container, detailsFragment).commit();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, detailsFragment)
+                        .addToBackStack("DetailsFragment")
+                        .commit();
             }
         });
         searchVolunteerOpportunities();
