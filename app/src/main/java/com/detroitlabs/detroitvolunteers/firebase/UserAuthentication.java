@@ -68,11 +68,11 @@ public class UserAuthentication {
         });
     }
 
-    public void loginUser(@NonNull final User user, String password, final UserAuthCallBack callback){
+    private void loginUser(@NonNull final User user, String password, final UserAuthCallBack callback){
         firebase.getFirebaseBaseRef().authWithPassword(user.getUserEmail(), password, new Firebase.AuthResultHandler() {
             @Override
             public void onAuthenticated(AuthData authData) {
-                User userAuth = new User.Builder().fromUser(user).withUserUid(authData.getUid()).build();
+                User userAuth = updateUserUid(user, authData.getUid());
                 callback.onSuccess(userAuth);
             }
 
@@ -85,6 +85,10 @@ public class UserAuthentication {
 
     private User updateUserUid(@NonNull User user, Map<String, Object> map){
         String uid = (String) map.get("uid");
+        return updateUserUid(user, uid);
+    }
+
+    private User updateUserUid(@NonNull User user, String uid){
         return new User.Builder().fromUser(user).withUserUid(uid).build();
     }
 
