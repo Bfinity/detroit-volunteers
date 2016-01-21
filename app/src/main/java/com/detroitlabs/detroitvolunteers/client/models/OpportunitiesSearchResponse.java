@@ -1,7 +1,5 @@
 package com.detroitlabs.detroitvolunteers.client.models;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
@@ -9,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public class OpportunitiesResponse {
+public class OpportunitiesSearchResponse {
 
     int currentPage;
 
@@ -24,14 +22,14 @@ public class OpportunitiesResponse {
     private String sortCriteria;
 
 
-    public OpportunitiesResponse(){
+    public OpportunitiesSearchResponse(){
         volunteerOpportunities = new ArrayList<VolunteerOpportunity>();
     }
 
-    public static OpportunitiesResponse parseJSON(String response){
+    public static OpportunitiesSearchResponse parseJSON(String response){
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        OpportunitiesResponse opportunitiesResponse = gson.fromJson(response, OpportunitiesResponse.class);
-        return opportunitiesResponse;
+        OpportunitiesSearchResponse opportunitiesSearchResponse = gson.fromJson(response, OpportunitiesSearchResponse.class);
+        return opportunitiesSearchResponse;
     }
 
     public ArrayList<VolunteerOpportunity> getList(){

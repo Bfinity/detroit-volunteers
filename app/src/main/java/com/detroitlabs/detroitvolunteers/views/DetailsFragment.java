@@ -14,6 +14,7 @@ import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
 
 public class DetailsFragment extends RoboFragment {
+    //todo update view
 
     @InjectView(R.id.opportunityTitle)
     TextView oppTitle;

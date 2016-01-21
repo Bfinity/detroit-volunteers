@@ -56,15 +56,15 @@ public class SignInFragment extends RoboFragment implements UserAuthCallBack {
             public void onClick(View v) {
                 if (isUserEmailFieldVisible()) {
                     if (signUpFieldsComplete()) {
-                        signUpNewUser(usernameField.getText().toString(),
-                                      userEmailField.getText().toString(),
-                                      passwordField.getText().toString());
+                        signUpNewUser(getStringTrimmed(usernameField),
+                                      getStringTrimmed(userEmailField),
+                                      getStringTrimmed(passwordField));
                     }
                 }
                 else{
                     if(logInFieldsComplete()){
-                        logInReturningUser(usernameField.getText().toString(),
-                                           passwordField.getText().toString());
+                        logInReturningUser(getStringTrimmed(usernameField),
+                                           getStringTrimmed(passwordField));
                     }
                 }
             }
@@ -102,6 +102,10 @@ public class SignInFragment extends RoboFragment implements UserAuthCallBack {
 
     private boolean isTextNotEmpty(EditText editText){
         return !TextUtils.isEmpty(editText.getText());
+    }
+
+    private String getStringTrimmed(EditText editText){
+        return editText.getText().toString().trim();
     }
 
     private void signUpNewUser(String userName, String userEmail, String password){

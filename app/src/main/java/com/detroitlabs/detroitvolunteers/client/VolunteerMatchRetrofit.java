@@ -1,6 +1,6 @@
 package com.detroitlabs.detroitvolunteers.client;
 
-import com.detroitlabs.detroitvolunteers.client.models.OpportunitiesResponse;
+import com.detroitlabs.detroitvolunteers.client.models.OpportunitiesSearchResponse;
 import com.detroitlabs.detroitvolunteers.client.service.VolunteerMatchApiService;
 
 import java.io.IOException;
@@ -23,10 +23,10 @@ public class VolunteerMatchRetrofit {
     public void searchForVolunteerOpportunities(final SearchOpportunitiesCallBack searchCallBack){
         Retrofit retrofit = generateBuildRetroFitClient();
         VolunteerMatchApiService service = retrofit.create(VolunteerMatchApiService.class);
-        final Call<OpportunitiesResponse> call = service.getAllVolunteerOpportunities();
-        call.enqueue(new Callback<OpportunitiesResponse>() {
+        final Call<OpportunitiesSearchResponse> call = service.getAllVolunteerOpportunities();
+        call.enqueue(new Callback<OpportunitiesSearchResponse>() {
             @Override
-            public void onResponse(retrofit2.Response<OpportunitiesResponse> response) {
+            public void onResponse(retrofit2.Response<OpportunitiesSearchResponse> response) {
                 if(response.body() != null){
                     searchCallBack.onSuccess(response.body());
                 }

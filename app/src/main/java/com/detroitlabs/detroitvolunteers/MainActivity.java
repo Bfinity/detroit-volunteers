@@ -12,8 +12,6 @@ import roboguice.activity.RoboActionBarActivity;
 
 public class MainActivity extends RoboActionBarActivity {
 
-    //todo move the search logic into the login fragment
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
