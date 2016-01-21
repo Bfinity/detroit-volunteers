@@ -54,17 +54,15 @@ public class SignInFragment extends RoboFragment implements UserAuthCallBack {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isUsernameFieldVisible()) {
-                    if (signUpFieldsComplete()) {
-                        signUpNewUser(getStringTrimmed(usernameField),
-                                      getStringTrimmed(userEmailField),
-                                      getStringTrimmed(passwordField));
+                if(isUserFieldsComplete()){
+                    String userEmail = getStringTrimmed(userEmailField);
+                    String password = getStringTrimmed(passwordField);
+                    if(isUsernameFieldVisible()){
+                        String userName = getStringTrimmed(usernameField);
+                        signUpNewUser(userName, userEmail, password);
                     }
-                }
-                else{
-                    if(logInFieldsComplete()){
-                        logInReturningUser(getStringTrimmed(userEmailField),
-                                           getStringTrimmed(passwordField));
+                    else {
+                        logInReturningUser(userEmail, password);
                     }
                 }
             }
@@ -92,12 +90,20 @@ public class SignInFragment extends RoboFragment implements UserAuthCallBack {
         return usernameField.getVisibility() == View.VISIBLE;
     }
 
-    private boolean signUpFieldsComplete(){
-        return isTextNotEmpty(usernameField) & logInFieldsComplete();
-    }
-
-    private boolean logInFieldsComplete(){
-        return isTextNotEmpty(userEmailField) && isTextNotEmpty(passwordField);
+    private boolean isUserFieldsComplete(){
+        if(isUsernameFieldVisible() && !isTextNotEmpty(usernameField)){
+            showDialog("Please enter your username");
+            return false;
+        }
+        if(!isTextNotEmpty(userEmailField)){
+            showDialog("Please enter your email");
+            return false;
+        }
+        if(!isTextNotEmpty(passwordField)){
+            showDialog("Please enter your password");
+            return false;
+        }
+        return true;
     }
 
     private boolean isTextNotEmpty(EditText editText){
