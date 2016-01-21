@@ -127,9 +127,13 @@ public class SignInFragment extends RoboFragment implements UserAuthCallBack {
 
     @Override
     public void onError(String errorMessage) {
+        showDialog(errorMessage);
+    }
+
+    private void showDialog(String message){
         AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-        dialog.setTitle("Error")
-                .setMessage(errorMessage)
+        dialog.setTitle("Oops")
+                .setMessage(message)
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
