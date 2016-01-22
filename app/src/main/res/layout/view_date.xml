@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+                android:padding="@dimen/date_view_padding"
+              android:orientation="vertical"
+              android:layout_width="wrap_content"
+              android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textview_date"
+        tools:text="26"
+        android:textSize="@dimen/date_view_text_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/textview_month"
+        tools:text="Jan"
+        android:textSize="@dimen/date_view_text_size"
+        android:layout_below="@id/textview_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:id="@+id/image_date"
+        android:visibility="gone"
+        android:src="@drawable/ic_apps_24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</RelativeLayout>
