@@ -1,4 +1,4 @@
-package com.detroitlabs.detroitvolunteers.views;
+package com.detroitlabs.detroitvolunteers.fragments;
 
 import android.app.AlertDialog;
 import android.content.Context;

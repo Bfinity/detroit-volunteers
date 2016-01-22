@@ -5,7 +5,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.detroitlabs.detroitvolunteers.views.SignInFragment;
+import com.detroitlabs.detroitvolunteers.fragments.SignInFragment;
 import com.firebase.client.Firebase;
 
 import roboguice.activity.RoboActionBarActivity;
