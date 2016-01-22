@@ -1,6 +1,7 @@
 package com.detroitlabs.detroitvolunteers.views;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +43,8 @@ public class ListResultsFragment extends RoboFragment implements SearchOpportuni
 
     private boolean isFavoritesShowing = false;
 
+    private Parcelable savedListInstance;
+
     private ArrayList<VolunteerOpportunity> searchList = new ArrayList<VolunteerOpportunity>();
     private ArrayList<VolunteerOpportunity> favList = new ArrayList<VolunteerOpportunity>();
 
@@ -68,19 +71,17 @@ public class ListResultsFragment extends RoboFragment implements SearchOpportuni
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if(savedListInstance != null){
+            resultsList.onRestoreInstanceState(savedListInstance);
+        }
         resultsList.setAdapter(adapter);
         resultsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 VolunteerOpportunity opportunity = (VolunteerOpportunity) parent.getItemAtPosition(position);
-                DetailsFragment detailsFragment = DetailsFragment.newInstance(user, opportunity);
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.container, detailsFragment)
-                        .addToBackStack("DetailsFragment")
-                        .commit();
+                showDetailsFragment(opportunity);
             }
         });
-        searchVolunteerOpportunities();
         showFavs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,6 +93,30 @@ public class ListResultsFragment extends RoboFragment implements SearchOpportuni
                 }
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(searchList.isEmpty()) {
+            searchVolunteerOpportunities();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ListView lv = (ListView) getView().findViewById(R.id.resultsList);
+        savedListInstance = lv.onSaveInstanceState();
+    }
+
+    private void showDetailsFragment(VolunteerOpportunity opportunity){
+        DetailsFragment detailsFragment = DetailsFragment.newInstance(user, opportunity);
+        getFragmentManager().beginTransaction()
+                .hide(this)
+                .add(R.id.container, detailsFragment)
+                .addToBackStack("DetailsFragment")
+                .commit();
     }
 
     private void searchVolunteerOpportunities(){
