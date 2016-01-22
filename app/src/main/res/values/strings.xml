@@ -7,4 +7,5 @@
     <string name="button_login">login</string>
     <string name="text_signup">Click here to signup</string>
     <string name="button_sign_up">sign up</string>
+    <string name="textview_save">Add to Favorites</string>
 </resources>

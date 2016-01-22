@@ -7,6 +7,7 @@
 
     <EditText
         android:id="@+id/edittext_username"
+        android:imeOptions="actionNext"
         android:visibility="gone"
         android:hint="@string/edittext_username_hint"
         android:layout_width="match_parent"
@@ -14,6 +15,7 @@
 
     <EditText
         android:id="@+id/edittext_email"
+        android:imeOptions="actionNext"
         android:inputType="textEmailAddress"
         android:hint="@string/edittext_email_hint"
         android:layout_width="match_parent"
@@ -21,6 +23,7 @@
 
     <EditText
         android:id="@+id/edittext_password"
+        android:imeOptions="actionDone"
         android:inputType="textPassword"
         android:hint="@string/edittext_password_hint"
         android:layout_width="match_parent"

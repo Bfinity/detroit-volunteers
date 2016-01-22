@@ -1,6 +1,5 @@
 package com.detroitlabs.detroitvolunteers.client.models;
 
-import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -11,6 +10,8 @@ public class VolunteerOpportunity implements Parcelable {
     Availability availability;
 
     int[] categoryIds;
+
+    int id;
 
     @SerializedName("plaintextDescription")
     String opportunityDescription;
@@ -34,6 +35,10 @@ public class VolunteerOpportunity implements Parcelable {
 
     public int[] getCategoryIds(){
         return categoryIds;
+    }
+
+    public int getId(){
+        return id;
     }
 
     public String getOpportunityDescription(){
@@ -114,8 +119,9 @@ public class VolunteerOpportunity implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(this.availability, flags);
+        dest.writeParcelable(this.availability, 0);
         dest.writeIntArray(this.categoryIds);
+        dest.writeInt(this.id);
         dest.writeString(this.opportunityDescription);
         dest.writeParcelable(this.location, 0);
         dest.writeInt(this.minimumAge);
@@ -127,6 +133,7 @@ public class VolunteerOpportunity implements Parcelable {
     protected VolunteerOpportunity(Parcel in) {
         this.availability = in.readParcelable(Availability.class.getClassLoader());
         this.categoryIds = in.createIntArray();
+        this.id = in.readInt();
         this.opportunityDescription = in.readString();
         this.location = in.readParcelable(Location.class.getClassLoader());
         this.minimumAge = in.readInt();
