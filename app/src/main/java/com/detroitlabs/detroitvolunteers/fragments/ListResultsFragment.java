@@ -1,17 +1,18 @@
-package com.detroitlabs.detroitvolunteers.views;
+package com.detroitlabs.detroitvolunteers.fragments;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.detroitlabs.detroitvolunteers.R;
+import com.detroitlabs.detroitvolunteers.adapters.VolunteerOpportunityAdapter;
 import com.detroitlabs.detroitvolunteers.client.SearchOpportunitiesCallBack;
 import com.detroitlabs.detroitvolunteers.client.VolunteerMatchRetrofit;
 import com.detroitlabs.detroitvolunteers.client.models.OpportunitiesSearchResponse;
@@ -40,16 +41,14 @@ public class ListResultsFragment extends RoboFragment implements SearchOpportuni
 
     private VolunteerMatchRetrofit retrofitInstance = new VolunteerMatchRetrofit();
 
-    private ArrayList<VolunteerOpportunity> listToDisplay;
-
     private boolean isFavoritesShowing = false;
 
-    //todo replace with custom list
-    private ArrayList<String> searchList = new ArrayList<String>();
-    private ArrayList<String> favList = new ArrayList<String>();
+    private Parcelable savedListInstance;
 
-    //todo replace with custom adapter
-    private ArrayAdapter<String> adapter;
+    private ArrayList<VolunteerOpportunity> searchList = new ArrayList<VolunteerOpportunity>();
+    private ArrayList<VolunteerOpportunity> favList = new ArrayList<VolunteerOpportunity>();
+
+    private VolunteerOpportunityAdapter adapter;
 
     public static ListResultsFragment newInstance(User user){
         Bundle bundle = new Bundle();
@@ -59,33 +58,30 @@ public class ListResultsFragment extends RoboFragment implements SearchOpportuni
         return listResultsFragment;
     }
 
-    //todo display custom view of list item
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_listresults, container, false);
         user = getArguments().getParcelable(USER_BUNDLE_KEY);
-        adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1);
-
+        adapter = new VolunteerOpportunityAdapter(getContext(), R.layout.list_item_opportunity);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if(savedListInstance != null){
+            resultsList.onRestoreInstanceState(savedListInstance);
+        }
         resultsList.setAdapter(adapter);
         resultsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DetailsFragment detailsFragment = DetailsFragment.newInstance(user, listToDisplay.get(position));
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.container, detailsFragment)
-                        .addToBackStack("DetailsFragment")
-                        .commit();
+                VolunteerOpportunity opportunity = (VolunteerOpportunity) parent.getItemAtPosition(position);
+                showDetailsFragment(opportunity);
             }
         });
-        searchVolunteerOpportunities();
         showFavs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,6 +93,30 @@ public class ListResultsFragment extends RoboFragment implements SearchOpportuni
                 }
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(searchList.isEmpty()) {
+            searchVolunteerOpportunities();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ListView lv = (ListView) getView().findViewById(R.id.resultsList);
+        savedListInstance = lv.onSaveInstanceState();
+    }
+
+    private void showDetailsFragment(VolunteerOpportunity opportunity){
+        DetailsFragment detailsFragment = DetailsFragment.newInstance(user, opportunity);
+        getFragmentManager().beginTransaction()
+                .hide(this)
+                .add(R.id.container, detailsFragment)
+                .addToBackStack("DetailsFragment")
+                .commit();
     }
 
     private void searchVolunteerOpportunities(){
@@ -112,8 +132,7 @@ public class ListResultsFragment extends RoboFragment implements SearchOpportuni
             @Override
             public void onSuccess(ArrayList<VolunteerOpportunity> listOfOpportunities) {
                 adapter.clear();
-                favList.clear();
-                favList.add(listOfOpportunities.get(0).getOpportunityTitle());
+                favList = listOfOpportunities;
                 adapter.addAll(favList);
                 adapter.notifyDataSetChanged();
             }
@@ -136,9 +155,7 @@ public class ListResultsFragment extends RoboFragment implements SearchOpportuni
     @Override
     public void onSuccess(OpportunitiesSearchResponse response) {
         adapter.clear();
-        listToDisplay = response.getList();
-        searchList.add(listToDisplay.get(0).getOpportunityTitle());
-        searchList.add(String.valueOf(listToDisplay.get(0).getAvailability().isOngoing()));
+        searchList = response.getList();
         adapter.addAll(searchList);
         adapter.notifyDataSetChanged();
     }
