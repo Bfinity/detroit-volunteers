@@ -1,11 +1,25 @@
 <resources>
     <string name="app_name">Detroit Volunteers</string>
+
+    <!-- menu strings -->
     <string name="action_settings">Settings</string>
+    <string name="action_favorites">Favorites</string>
+    <string name="action_add_favorites">Add to Favorites</string>
+    <string name="action_log_out">Log out</string>
+    <string name="action_refresh">Refresh</string>
+
+    <!-- signin fragment strings -->
     <string name="edittext_username_hint">Enter Username</string>
     <string name="edittext_email_hint">Enter Email Address</string>
     <string name="edittext_password_hint">Enter Password</string>
     <string name="button_login">login</string>
     <string name="text_signup">Click here to signup</string>
     <string name="button_sign_up">sign up</string>
+
+    <!-- listview fragment strings -->
     <string name="textview_save">Add to Favorites</string>
+
+    <!-- detail fragment strings -->
+    <string name="textview_opp_link">View Online</string>
+
 </resources>

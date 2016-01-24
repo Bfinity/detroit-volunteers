@@ -26,7 +26,7 @@ public class VolunteerOpportunity implements Parcelable {
     @SerializedName("title")
     String opportunityTitle;
 
-    @SerializedName("vmURL")
+    @SerializedName("vmUrl")
     String opportunityUrl;
 
     public Availability getAvailability(){

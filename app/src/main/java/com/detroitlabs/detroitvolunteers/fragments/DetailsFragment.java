@@ -1,5 +1,7 @@
 package com.detroitlabs.detroitvolunteers.fragments;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -26,6 +28,9 @@ public class DetailsFragment extends RoboFragment implements SaveOpportunityCall
 
     @InjectView(R.id.opportunityTitle)
     TextView oppTitle;
+
+    @InjectView(R.id.opportunityLink)
+    TextView oppLink;
 
     @InjectView(R.id.opportunityDescription)
     TextView oppDescript;
@@ -74,6 +79,22 @@ public class DetailsFragment extends RoboFragment implements SaveOpportunityCall
                 saveToFavorites();
             }
         });
+        if(volunteerOpportunity.getOpportunityUrl() != null) {
+            oppLink.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String oppUri = volunteerOpportunity.getOpportunityUrl();
+                    Intent showPage = new Intent(Intent.ACTION_VIEW);
+                    String uri2 = Uri.decode(oppUri);
+                    showPage.setData(Uri.parse(uri2));
+                    startActivity(showPage);
+                }
+            });
+        }
+        else{
+            oppLink.setVisibility(View.INVISIBLE);
+            oppLink.setClickable(false);
+        }
     }
 
     private void saveToFavorites(){

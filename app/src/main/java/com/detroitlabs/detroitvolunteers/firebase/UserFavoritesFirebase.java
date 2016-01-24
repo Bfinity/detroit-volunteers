@@ -1,7 +1,5 @@
 package com.detroitlabs.detroitvolunteers.firebase;
 
-import android.util.Log;
-
 import com.detroitlabs.detroitvolunteers.client.models.VolunteerOpportunity;
 import com.detroitlabs.detroitvolunteers.models.User;
 import com.firebase.client.DataSnapshot;
@@ -39,13 +37,12 @@ public class UserFavoritesFirebase {
         firebase.getFirebaseFavoriteRef().child(user.getUserUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i("GetSaved", dataSnapshot.getChildren().iterator().next().getValue(VolunteerOpportunity.class).toString());
+                ArrayList<VolunteerOpportunity> list = new ArrayList<VolunteerOpportunity>();
                 for(DataSnapshot shot: dataSnapshot.getChildren()) {
                     VolunteerOpportunity op = shot.getValue(VolunteerOpportunity.class);
-                    ArrayList<VolunteerOpportunity> list = new ArrayList<VolunteerOpportunity>();
                     list.add(op);
-                    callback.onSuccess(list);
                 }
+                callback.onSuccess(list);
             }
 
             @Override

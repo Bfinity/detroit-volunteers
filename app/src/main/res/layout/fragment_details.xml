@@ -22,16 +22,26 @@
 
         <TextView
             android:id="@+id/opportunityTitle"
+            android:padding="@dimen/date_view_text_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/opportunityLink"
+            android:autoLink="web"
+            android:text="@string/textview_opp_link"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/opportunityDescription"
+            android:padding="@dimen/date_view_text_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/opportunityParentOrgName"
+            android:padding="@dimen/date_view_text_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
