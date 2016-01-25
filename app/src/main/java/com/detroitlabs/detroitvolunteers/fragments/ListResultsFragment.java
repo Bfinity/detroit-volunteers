@@ -85,6 +85,11 @@ public class ListResultsFragment extends RoboFragment implements SearchOpportuni
             case R.id.action_refresh:
                 searchVolunteerOpportunities();
                 return true;
+            case R.id.action_logout:
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, new SignInFragment())
+                        .commit();
+                return true;
             default:
               return  super.onOptionsItemSelected(item);
         }
