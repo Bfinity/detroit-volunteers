@@ -17,14 +17,10 @@ import com.detroitlabs.detroitvolunteers.firebase.UserFavoritesFirebase;
 import com.detroitlabs.detroitvolunteers.firebase.VolunteerMatchFirebase;
 import com.detroitlabs.detroitvolunteers.models.User;
 
-import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
 
-public class DetailsFragment extends RoboFragment implements SaveOpportunityCallback{
+public class DetailsFragment extends BaseOpportunityFragment implements SaveOpportunityCallback{
     //todo update view
-
-    @InjectView(R.id.textview_save)
-    TextView addToFavorites;
 
     @InjectView(R.id.opportunityTitle)
     TextView oppTitle;
@@ -73,12 +69,6 @@ public class DetailsFragment extends RoboFragment implements SaveOpportunityCall
         oppTitle.setText(volunteerOpportunity.getOpportunityTitle());
         oppDescript.setText(volunteerOpportunity.getOpportunityDescription());
         oppParentOrg.setText(volunteerOpportunity.getParentOrg().getName());
-        addToFavorites.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveToFavorites();
-            }
-        });
         if(volunteerOpportunity.getOpportunityUrl() != null) {
             oppLink.setOnClickListener(new View.OnClickListener() {
                 @Override

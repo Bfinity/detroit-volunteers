@@ -1,6 +1,7 @@
 package com.detroitlabs.detroitvolunteers;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,8 +23,12 @@ public class MainActivity extends RoboActionBarActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.container, new SignInFragment()).commit();
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        FragmentManager manager = getSupportFragmentManager();
+        if(manager.getFragments() == null) {
+            manager.beginTransaction()
+                    .add(R.id.container, new SignInFragment()).commit();
+        }
     }
 
     @Override

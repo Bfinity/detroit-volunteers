@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.detroitlabs.detroitvolunteers.R;
 import com.detroitlabs.detroitvolunteers.adapters.VolunteerOpportunityAdapter;
@@ -28,18 +30,17 @@ import com.detroitlabs.detroitvolunteers.models.User;
 
 import java.util.ArrayList;
 
-import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
 
-public class ListResultsFragment extends RoboFragment implements SearchOpportunitiesCallBack {
+public class ListResultsFragment extends BaseOpportunityFragment{
 
     private static final String USER_BUNDLE_KEY = "userKey";
 
     @InjectView(R.id.resultsList)
     ListView resultsList;
 
-    @InjectView(R.id.textview_show_fav)
-    TextView showFavs;
+    @InjectView(R.id.textview_list_displayed)
+    TextView listDisplayed;
 
     private User user;
 
@@ -63,14 +64,22 @@ public class ListResultsFragment extends RoboFragment implements SearchOpportuni
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        if(getActivity() instanceof AppCompatActivity){
+            Toolbar toolbar = (Toolbar) ((AppCompatActivity) getActivity()).findViewById(R.id.toolbar);
+            toolbar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(isFavoritesShowing){
+                        showSearchResults();
+                    }
+                    else{
+                        showFavorites();
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -84,11 +93,6 @@ public class ListResultsFragment extends RoboFragment implements SearchOpportuni
         switch (item.getItemId()){
             case R.id.action_refresh:
                 searchVolunteerOpportunities();
-                return true;
-            case R.id.action_logout:
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.container, new SignInFragment())
-                        .commit();
                 return true;
             default:
               return  super.onOptionsItemSelected(item);
@@ -119,16 +123,7 @@ public class ListResultsFragment extends RoboFragment implements SearchOpportuni
                 showDetailsFragment(opportunity);
             }
         });
-        showFavs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isFavoritesShowing) {
-                    showSearchResults();
-                } else {
-                    showFavorites();
-                }
-            }
-        });
+        listDisplayed.setText(R.string.textview_search_results);
     }
 
     @Override
@@ -155,22 +150,55 @@ public class ListResultsFragment extends RoboFragment implements SearchOpportuni
                 .commit();
     }
 
-    private void searchVolunteerOpportunities(){
-        retrofitInstance.searchForVolunteerOpportunities(this);
+    private void showSearchResults(){
+        isFavoritesShowing = false;
+        listDisplayed.setText(R.string.textview_search_results);
+        if(searchList.isEmpty()){
+            searchVolunteerOpportunities();
+        }
+        else {
+            updateListViewAdapter(searchList);
+        }
     }
 
-    //todo implement favorite in bar
-    //fixme
+    private void searchVolunteerOpportunities(){
+        retrofitInstance.searchForVolunteerOpportunities(new SearchOpportunitiesCallBack() {
+            @Override
+            public void onSuccess(OpportunitiesSearchResponse response) {
+                searchList = response.getList();
+                updateListViewAdapter(searchList);
+            }
+
+            @Override
+            public void onError(int statusCode) {
+                Toast.makeText(getContext(), "An error occurred", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(String message) {
+                Toast.makeText(getContext(), "An error occurred", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
     private void showFavorites(){
         isFavoritesShowing = true;
+        listDisplayed.setText(R.string.textview_favorites);
+        if(favList.isEmpty()) {
+            getSavedOpportunities();
+        }
+        else{
+            updateListViewAdapter(favList);
+        }
+    }
+
+    private void getSavedOpportunities() {
         UserFavoritesFirebase firebase = new UserFavoritesFirebase(user, new VolunteerMatchFirebase());
         firebase.getSavedOpportunities(user, new GetSavedOpportunitiesCallback() {
             @Override
             public void onSuccess(ArrayList<VolunteerOpportunity> listOfOpportunities) {
-                adapter.clear();
                 favList = listOfOpportunities;
-                adapter.addAll(favList);
-                adapter.notifyDataSetChanged();
+                updateListViewAdapter(favList);
             }
 
             @Override
@@ -180,30 +208,9 @@ public class ListResultsFragment extends RoboFragment implements SearchOpportuni
         });
     }
 
-    //fixme persist list
-    private void showSearchResults(){
-        isFavoritesShowing = false;
+    private void updateListViewAdapter(ArrayList<VolunteerOpportunity> listToDisplay){
         adapter.clear();
-        adapter.addAll(searchList);
+        adapter.addAll(listToDisplay);
         adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onSuccess(OpportunitiesSearchResponse response) {
-        adapter.clear();
-        searchList = response.getList();
-        adapter.addAll(searchList);
-        adapter.notifyDataSetChanged();
-    }
-
-    //todo replace with custom popup
-    @Override
-    public void onError(int statusCode) {
-        Toast.makeText(getContext(), "An error occurred", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onFailure(String message) {
-        Toast.makeText(getContext(), "An error occurred", Toast.LENGTH_LONG).show();
     }
 }

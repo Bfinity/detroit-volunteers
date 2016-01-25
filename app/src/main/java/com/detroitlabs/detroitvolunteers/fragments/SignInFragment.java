@@ -1,9 +1,11 @@
 package com.detroitlabs.detroitvolunteers.fragments;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.detroitlabs.detroitvolunteers.R;
 import com.detroitlabs.detroitvolunteers.firebase.UserAuthCallBack;
@@ -40,7 +43,15 @@ public class SignInFragment extends RoboFragment implements UserAuthCallBack {
     @InjectView(R.id.text_signup)
     TextView signUpLink;
 
-    UserAuthentication userAuthentication = new UserAuthentication(new VolunteerMatchFirebase());
+    private UserAuthentication userAuthentication = new UserAuthentication(new VolunteerMatchFirebase());
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if(getActivity() instanceof AppCompatActivity) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setIcon(null);
+        }
+    }
 
     @Nullable
     @Override
@@ -142,7 +153,7 @@ public class SignInFragment extends RoboFragment implements UserAuthCallBack {
 
     @Override
     public void onLogOutSuccess() {
-
+        Toast.makeText(getContext(), "You've logged out", Toast.LENGTH_LONG).show();
     }
 
     private void showDialog(String message){

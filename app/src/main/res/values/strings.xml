@@ -17,7 +17,8 @@
     <string name="button_sign_up">sign up</string>
 
     <!-- listview fragment strings -->
-    <string name="textview_save">Add to Favorites</string>
+    <string name="textview_favorites">Favorites</string>
+    <string name="textview_search_results">Results</string>
 
     <!-- detail fragment strings -->
     <string name="textview_opp_link">View Online</string>

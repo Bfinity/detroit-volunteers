@@ -5,9 +5,7 @@
               android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textview_show_fav"
-        android:text="Favorites"
-        android:clickable="true"
+        android:id="@+id/textview_list_displayed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
