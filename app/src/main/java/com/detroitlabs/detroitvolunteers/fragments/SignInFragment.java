@@ -46,6 +46,7 @@ public class SignInFragment extends RoboFragment implements UserAuthCallBack {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        userAuthentication.logOutUser(this);
         return inflater.inflate(R.layout.fragment_signin, container, false);
     }
 
@@ -126,7 +127,7 @@ public class SignInFragment extends RoboFragment implements UserAuthCallBack {
     }
 
     @Override
-    public void onSuccess(User user) {
+    public void onLogInSuccess(User user) {
         passwordField.onEditorAction(EditorInfo.IME_ACTION_DONE);
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, ListResultsFragment.newInstance(user))
@@ -137,6 +138,11 @@ public class SignInFragment extends RoboFragment implements UserAuthCallBack {
     @Override
     public void onError(String errorMessage) {
         showDialog(errorMessage);
+    }
+
+    @Override
+    public void onLogOutSuccess() {
+
     }
 
     private void showDialog(String message){

@@ -73,12 +73,24 @@ public class UserAuthentication {
             @Override
             public void onAuthenticated(AuthData authData) {
                 User userAuth = updateUserUid(user, authData.getUid());
-                callback.onSuccess(userAuth);
+                callback.onLogInSuccess(userAuth);
             }
 
             @Override
             public void onAuthenticationError(FirebaseError firebaseError) {
                 callback.onError(firebaseError.getMessage());
+            }
+        });
+    }
+
+    public void logOutUser(final UserAuthCallBack callBack){
+        firebase.getFirebaseBaseRef().addAuthStateListener(new Firebase.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(AuthData authData) {
+                if(authData != null){
+                    firebase.getFirebaseBaseRef().unauth();
+                    callBack.onLogOutSuccess();
+                }
             }
         });
     }
